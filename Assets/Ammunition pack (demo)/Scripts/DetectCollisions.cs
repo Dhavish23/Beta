@@ -1,24 +1,49 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI; 
 
-public class DetectCollisions : MonoBehaviour
+public class GameEvents : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
+    public Text gameOverText;
+
+    
     void Start()
     {
         
+        if (gameOverText != null)
+        {
+            gameOverText.gameObject.SetActive(false);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    
     private void OnTriggerEnter(Collider other)
     {
-        Destroy(gameObject); // Destroy this gameObject
-        Destroy(other.gameObject); // Destroy the other gameObject that triggered the collision
+        
+        Debug.Log("Trigger detected with: " + other.gameObject.name);
+
+        if (other.gameObject.CompareTag("Player"))
+        {
+            
+            if (gameOverText != null)
+            {
+                gameOverText.gameObject.SetActive(true);
+                gameOverText.text = "Game Over";
+            }
+
+            
+
+            
+            SceneManager.LoadScene("LoadScreen");
+        }
+        else
+        {
+            
+            Destroy(gameObject);
+            Destroy(other.gameObject);
+        }
     }
 }
